@@ -60,6 +60,7 @@ public class TransportService {
         List<Transport> transportList = route.getTransportList();
 
         for(Transport transport:transportList){
+            //date filter
             if(transport.getJourneyDate().equals(searchFlightDto.getJourneyDate())){
                 FlightResult result = TransportTransformer.convertEntityToFlightResult(transport);
                 result.setListOfStopInBetween(route.getListOfStopInBetween());
@@ -69,7 +70,4 @@ public class TransportService {
     }
         return flightResults;
     }
-
-
-
 }

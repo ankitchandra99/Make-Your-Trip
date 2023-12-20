@@ -32,7 +32,7 @@ public class TransportControllers {
         }
     }
 
-    @PutMapping("/searchFlights")
+    @GetMapping("/searchFlights")
     public ResponseEntity searchFlights(@RequestBody SearchFlightDto searchFlightDto){
 
         List<FlightResult> flightResults = transportService.searchForFlights(searchFlightDto);

@@ -1,6 +1,4 @@
 package com.example.Makeyourtrip.Models;
-
-
 import com.example.Makeyourtrip.Enums.ModeOfTransport;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

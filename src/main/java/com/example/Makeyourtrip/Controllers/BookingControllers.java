@@ -18,6 +18,12 @@ public class BookingControllers {
     @Autowired
     private BookingService bookingService;
 
+    @PostMapping("/bookFlight")
+    public ResponseEntity bookFlight(@RequestBody BookingRequest bookingRequest){
+
+        return bookingService.makeABooking(bookingRequest);
+    }
+
     @GetMapping("/getAvailableSeats")
     public ResponseEntity getAvailableSeats(@RequestBody GetAvailableSeatsDto getAvailableSeatsDto){
 
@@ -26,11 +32,6 @@ public class BookingControllers {
 
     }
 
-    @PostMapping("/bookFlight")
-    public ResponseEntity bookFlight(@RequestBody BookingRequest bookingRequest){
-
-    return null;
-    }
 
 
 

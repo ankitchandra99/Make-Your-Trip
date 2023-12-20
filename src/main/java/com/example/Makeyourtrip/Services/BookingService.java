@@ -8,7 +8,10 @@ import com.example.Makeyourtrip.RequestDto.BookingRequest;
 import com.example.Makeyourtrip.RequestDto.GetAvailableSeatsDto;
 import com.example.Makeyourtrip.ResponseDtos.AvailableSeatResponseDto;
 import com.example.Makeyourtrip.Transformers.BookingTransformers;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Service
+@Data
 public class BookingService {
 
     @Autowired
@@ -65,39 +69,40 @@ public class BookingService {
     }
 
 
-    public String makeABooking(BookingRequest bookingRequest){
+    public ResponseEntity makeABooking(BookingRequest bookingRequest){
 
-        User userObj = userRepository.findById(bookingRequest.getUserId()).get();
-        Transport transportObj = transportRepository.findById(bookingRequest.getTransportId()).get();
+        User userobj = userRepository.findById(bookingRequest.getUserId()).get();
+
+        Transport transportobj = transportRepository.findById(bookingRequest.getTransportId()).get();
 
         Booking booking = BookingTransformers.convertRequestToEntity(bookingRequest);
 
-        TicketEntity ticketEntity = createTicketEntity(transportObj,bookingRequest);
+        TicketEntity ticketEntity = createTicketEntity(transportobj,bookingRequest);
 
-
-        //Set the FK
-        booking.setTransport(transportObj);
-        booking.setUser(userObj);
+        ///Setting up the Foreign keys
+        booking.setTransport(transportobj);
+        booking.setUser( userobj);
         booking.setTicketEntity(ticketEntity);
 
 
+        ///now we will set the bidirectional mappings
+        ///setting the booking object in transport
+        ticketEntity.setBooking(booking);
 
-        //Setting the bidirectional mappings
-            //Setting for ticket
-            ticketEntity.setBooking(booking);
+        ///adding booking object in booking list in trasport
+        transportobj.getBookings().add(booking);
 
-            //Setting the booking obj in the transport
-            transportObj.getBookings().add(booking);
+        ///now we will add booking object in userobject
+        userobj.getBookingList().add(booking);
 
-            //Setting the booking obj in the userObject
-            userObj.getBookingList().add(booking);
+        ///we will have to save it also ..but how..?
 
+        bookingRepository.save(booking);
 
-        //Save kaise kroge figure out krna ////
-
-        return null;
+        return new ResponseEntity("booking has been done Successfully", HttpStatus.OK);
 
     }
+
 
     private TicketEntity createTicketEntity(Transport transport,BookingRequest bookingRequest){
 
