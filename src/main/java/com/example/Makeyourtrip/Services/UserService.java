@@ -19,7 +19,6 @@ public class UserService {
     private JavaMailSender emailSender;
 
     public String addUser(AddUserDto addUserDto){
-
         User user =  User.builder().age(addUserDto.getAge())
                 .name(addUserDto.getName())
                 .emailId(addUserDto.getEmailId())

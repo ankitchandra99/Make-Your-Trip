@@ -1,5 +1,6 @@
 package com.example.Makeyourtrip.Controllers;
 
+import com.example.Makeyourtrip.Models.Routes;
 import com.example.Makeyourtrip.RequestDto.AddRouteDto;
 import com.example.Makeyourtrip.Services.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class RouteController {
 
     @PostMapping("/add")
     public String addRoute(@RequestBody AddRouteDto addRouteDto){
+
         return routeService.addRoutes(addRouteDto);
     }
 

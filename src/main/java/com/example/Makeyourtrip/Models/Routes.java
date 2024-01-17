@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Routes {
 
-    @Id
+    @Id//primaryKey
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer routeId;
 
@@ -36,5 +36,34 @@ public class Routes {
     @OneToMany(mappedBy = "route",cascade = CascadeType.ALL)
     private List<Transport> transportList = new ArrayList<>();
 
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
+    }
 
+    public void setFromCity(City fromCity) {
+        this.fromCity = fromCity;
+    }
+
+    public void setToCity(City toCity) {
+        this.toCity = toCity;
+    }
+
+    public void setListOfStopInBetween(String listOfStopInBetween) {
+        this.listOfStopInBetween = listOfStopInBetween;
+    }
+
+    public void setModeOfTransport(ModeOfTransport modeOfTransport) {
+        this.modeOfTransport = modeOfTransport;
+    }
+
+    public void setTransportList(List<Transport> transportList) {
+        this.transportList = transportList;
+    }
+
+    public Routes(City fromCity, City toCity, String listOfStopInBetween, ModeOfTransport modeOfTransport) {
+        this.fromCity = fromCity;
+        this.toCity = toCity;
+        this.listOfStopInBetween = listOfStopInBetween;
+        this.modeOfTransport = modeOfTransport;
+    }
 }

@@ -24,16 +24,11 @@ public class BookingControllers {
         return bookingService.makeABooking(bookingRequest);
     }
 
-    @GetMapping("/getAvailableSeats")
+    @PostMapping("/getAvailableSeats")
     public ResponseEntity getAvailableSeats(@RequestBody GetAvailableSeatsDto getAvailableSeatsDto){
 
         List<AvailableSeatResponseDto> result = bookingService.getAvailableSeatsResponse(getAvailableSeatsDto);
         return new ResponseEntity(result, HttpStatus.OK);
 
     }
-
-
-
-
-
 }

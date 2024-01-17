@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 @Data
@@ -34,7 +31,7 @@ public class BookingService {
 
     public List<AvailableSeatResponseDto> getAvailableSeatsResponse(GetAvailableSeatsDto entryDto){
 
-        List<Booking> doneBookings = bookingRepository.findBookings(entryDto.getJourneyDate(),entryDto.getTransportId());
+        List<Booking> doneBookings = bookingRepository.findByJourneyDateAndTransportId(entryDto.getJourneyDate(),entryDto.getTransportId());
         Set<String> bookedSeats = new TreeSet<>();
         for(Booking booking:doneBookings){
             String str = booking.getSeatNos(); //1E,2E,3B,4B
@@ -70,8 +67,10 @@ public class BookingService {
 
 
     public ResponseEntity makeABooking(BookingRequest bookingRequest){
-
-        User userobj = userRepository.findById(bookingRequest.getUserId()).get();
+        Optional<User> optionalUser = userRepository.findById(bookingRequest.getUserId());
+        if(optionalUser.isEmpty()){
+            return new ResponseEntity(" User Not Available",HttpStatus.BAD_REQUEST);
+        }
 
         Transport transportobj = transportRepository.findById(bookingRequest.getTransportId()).get();
 
@@ -81,7 +80,7 @@ public class BookingService {
 
         ///Setting up the Foreign keys
         booking.setTransport(transportobj);
-        booking.setUser( userobj);
+        booking.setUser( optionalUser.get());
         booking.setTicketEntity(ticketEntity);
 
 
@@ -93,7 +92,7 @@ public class BookingService {
         transportobj.getBookings().add(booking);
 
         ///now we will add booking object in userobject
-        userobj.getBookingList().add(booking);
+        optionalUser.get().getBookingList().add(booking);
 
         ///we will have to save it also ..but how..?
 
@@ -129,7 +128,12 @@ public class BookingService {
     }
 
     private Integer findTotalPricePaid(Transport transport,String seatNos){
+         Double totalPrice=0.0;
+         List<Seat> seatList=transport.getSeatList();
+         String []arr=seatNos.split(",");
+         for(int i=0;i<arr.length;i++){
 
+         }
         //TODO Function to find the total price for all
         //INTERESTING : PLEASE TRY THIS
         return 0;

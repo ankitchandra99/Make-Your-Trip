@@ -14,10 +14,10 @@ public class RouteService {
     private RouteRepository routeRepository;
 
     public String addRoutes(AddRouteDto addRouteDto){
-//        Routes route = new Routes();
+      // Routes route = new Routes();
         Routes routeObj = RouteTransformers.convertDtoToEntity(addRouteDto);
-        routeRepository.save(routeObj);
-        return "Routes has been successfully added to DB. ";
+        Routes result =routeRepository.save(routeObj);
+        return "Routes has been successfully added to DB with id "+result.getRouteId();
     }
 
 
